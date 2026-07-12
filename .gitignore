@@ -1,28 +1,61 @@
+# ==========================
 # Entorno virtual
+# ==========================
 .venv/
 venv/
 
+# ==========================
 # Variables privadas
+# ==========================
 .env
 *.env
 
+# ==========================
 # Python
+# ==========================
 __pycache__/
 *.py[cod]
 *.pyo
 
-# Base vectorial generada
-data/
-*.faiss
-*.pkl
-
-# Configuraciones locales
+# ==========================
+# VS Code
+# ==========================
 .vscode/
 .idea/
 
-# Sistema operativo
+# ==========================
+# Sistema
+# ==========================
 .DS_Store
 Thumbs.db
 
+# ==========================
 # Streamlit
-.streamlit/secrets.toml
+# ==========================
+.streamlit/
+
+# ==========================
+# Base vectorial
+# ==========================
+data/*
+!data/faiss_index/
+!data/processed_documents/
+!data/cache/
+
+data/faiss_index/*
+data/processed_documents/*
+data/cache/*
+
+!data/faiss_index/.gitkeep
+!data/processed_documents/.gitkeep
+!data/cache/.gitkeep
+
+# ==========================
+# Logs
+# ==========================
+*.log
+
+# ==========================
+# Jupyter
+# ==========================
+.ipynb_checkpoints/
