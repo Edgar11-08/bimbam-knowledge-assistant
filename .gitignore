@@ -1,0 +1,28 @@
+# Entorno virtual
+.venv/
+venv/
+
+# Variables privadas
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Base vectorial generada
+data/
+*.faiss
+*.pkl
+
+# Configuraciones locales
+.vscode/
+.idea/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
