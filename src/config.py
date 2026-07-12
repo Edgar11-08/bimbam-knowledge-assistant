@@ -68,6 +68,10 @@ MODEL_TEMPERATURE = float(os.getenv("MODEL_TEMPERATURE", "0.1"))
 # Máximo de resultados que se mostrarán como fuentes
 MAX_SOURCES = int(os.getenv("MAX_SOURCES", "4"))
 
+FAISS_INDEX_NAME = os.getenv(
+    "FAISS_INDEX_NAME",
+    "bimbam_index",
+).strip()
 
 # ---------------------------------------------------------
 # Configuración general
