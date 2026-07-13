@@ -14,8 +14,10 @@ from dotenv import load_dotenv
 # challenge-alura-agente/
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Cargar las variables del archivo .env ubicado en la raíz
+# Archivo de variables de entorno
 ENV_FILE = BASE_DIR / ".env"
+
+# Cargar las variables del archivo .env ubicado en la raíz
 load_dotenv(dotenv_path=ENV_FILE)
 
 # Carpetas de documentos
@@ -38,7 +40,10 @@ EVIDENCE_DIR = BASE_DIR / "evidencias"
 # Configuración de Gemini
 # ---------------------------------------------------------
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
+GEMINI_API_KEY = os.getenv(
+    "GEMINI_API_KEY",
+    "",
+).strip()
 
 CHAT_MODEL = os.getenv(
     "GEMINI_CHAT_MODEL",
@@ -55,23 +60,61 @@ EMBEDDING_MODEL = os.getenv(
 # Configuración de procesamiento
 # ---------------------------------------------------------
 
-CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1000"))
-CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "200"))
+# Tamaño máximo aproximado de cada fragmento de texto
+CHUNK_SIZE = int(
+    os.getenv(
+        "CHUNK_SIZE",
+        "1000",
+    )
+)
 
-# Número de fragmentos que recuperará FAISS por pregunta
-RETRIEVER_TOP_K = int(os.getenv("RETRIEVER_TOP_K", "4"))
+# Cantidad de caracteres compartidos entre fragmentos consecutivos
+CHUNK_OVERLAP = int(
+    os.getenv(
+        "CHUNK_OVERLAP",
+        "200",
+    )
+)
+
+# Número de fragmentos recuperados por consulta
+RETRIEVER_TOP_K = int(
+    os.getenv(
+        "RETRIEVER_TOP_K",
+        "4",
+    )
+)
 
 # Nivel de creatividad del modelo.
 # Para responder con documentos conviene mantenerlo bajo.
-MODEL_TEMPERATURE = float(os.getenv("MODEL_TEMPERATURE", "0.1"))
+MODEL_TEMPERATURE = float(
+    os.getenv(
+        "MODEL_TEMPERATURE",
+        "0.1",
+    )
+)
 
-# Máximo de resultados que se mostrarán como fuentes
-MAX_SOURCES = int(os.getenv("MAX_SOURCES", "4"))
+# Máximo de archivos diferentes que se mostrarán como fuentes
+MAX_SOURCES = int(
+    os.getenv(
+        "MAX_SOURCES",
+        "4",
+    )
+)
 
+# Máximo de caracteres enviados como contexto al modelo
+MAX_CONTEXT_CHARACTERS = int(
+    os.getenv(
+        "MAX_CONTEXT_CHARACTERS",
+        "12000",
+    )
+)
+
+# Nombre utilizado para guardar los archivos del índice FAISS
 FAISS_INDEX_NAME = os.getenv(
     "FAISS_INDEX_NAME",
     "bimbam_index",
 ).strip()
+
 
 # ---------------------------------------------------------
 # Configuración general
@@ -89,7 +132,7 @@ SUPPORTED_CSV_EXTENSION = ".csv"
 
 
 # ---------------------------------------------------------
-# Funciones de validación
+# Funciones de configuración
 # ---------------------------------------------------------
 
 def create_required_directories() -> None:
@@ -106,10 +149,15 @@ def create_required_directories() -> None:
     ]
 
     for directory in required_directories:
-        directory.mkdir(parents=True, exist_ok=True)
+        directory.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
 
 
-def validate_configuration(require_api_key: bool = True) -> None:
+def validate_configuration(
+    require_api_key: bool = True,
+) -> None:
     """
     Verifica que la configuración mínima del proyecto sea válida.
 
@@ -119,7 +167,7 @@ def validate_configuration(require_api_key: bool = True) -> None:
 
     Raises:
         ValueError:
-            Si falta la API Key o algún parámetro numérico es inválido.
+            Si falta la API Key o algún parámetro es inválido.
         FileNotFoundError:
             Si no existen las carpetas de documentos.
     """
@@ -130,11 +178,30 @@ def validate_configuration(require_api_key: bool = True) -> None:
             "Agrégala al archivo .env ubicado en la raíz del proyecto."
         )
 
+    if not CHAT_MODEL:
+        raise ValueError(
+            "GEMINI_CHAT_MODEL no puede estar vacío."
+        )
+
+    if not EMBEDDING_MODEL:
+        raise ValueError(
+            "GEMINI_EMBEDDING_MODEL no puede estar vacío."
+        )
+
+    if not FAISS_INDEX_NAME:
+        raise ValueError(
+            "FAISS_INDEX_NAME no puede estar vacío."
+        )
+
     if CHUNK_SIZE <= 0:
-        raise ValueError("CHUNK_SIZE debe ser mayor que cero.")
+        raise ValueError(
+            "CHUNK_SIZE debe ser mayor que cero."
+        )
 
     if CHUNK_OVERLAP < 0:
-        raise ValueError("CHUNK_OVERLAP no puede ser negativo.")
+        raise ValueError(
+            "CHUNK_OVERLAP no puede ser negativo."
+        )
 
     if CHUNK_OVERLAP >= CHUNK_SIZE:
         raise ValueError(
@@ -142,7 +209,24 @@ def validate_configuration(require_api_key: bool = True) -> None:
         )
 
     if RETRIEVER_TOP_K <= 0:
-        raise ValueError("RETRIEVER_TOP_K debe ser mayor que cero.")
+        raise ValueError(
+            "RETRIEVER_TOP_K debe ser mayor que cero."
+        )
+
+    if MAX_SOURCES <= 0:
+        raise ValueError(
+            "MAX_SOURCES debe ser mayor que cero."
+        )
+
+    if MAX_CONTEXT_CHARACTERS <= 0:
+        raise ValueError(
+            "MAX_CONTEXT_CHARACTERS debe ser mayor que cero."
+        )
+
+    if MODEL_TEMPERATURE < 0:
+        raise ValueError(
+            "MODEL_TEMPERATURE no puede ser negativo."
+        )
 
     if not PDF_DIR.exists():
         raise FileNotFoundError(
