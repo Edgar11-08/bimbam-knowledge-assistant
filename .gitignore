@@ -58,4 +58,76 @@ data/cache/*
 # ==========================
 # Jupyter
 # ==========================
+.ipynb_checkpoints/# ==========================
+# Entorno virtual
+# ==========================
+.venv/
+venv/
+
+# ==========================
+# Variables privadas
+# ==========================
+.env
+*.env
+
+# ==========================
+# Python
+# ==========================
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Archivos temporales de Python
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+
+# ==========================
+# VS Code
+# ==========================
+.vscode/
+.idea/
+
+# ==========================
+# Sistema
+# ==========================
+.DS_Store
+Thumbs.db
+
+# ==========================
+# Streamlit
+# ==========================
+.streamlit/
+
+# ==========================
+# Base vectorial
+# ==========================
+data/*
+!data/faiss_index/
+!data/processed_documents/
+!data/cache/
+
+data/faiss_index/*
+data/processed_documents/*
+data/cache/*
+
+!data/faiss_index/.gitkeep
+!data/processed_documents/.gitkeep
+!data/cache/.gitkeep
+
+# ==========================
+# Logs
+# ==========================
+*.log
+
+# ==========================
+# Cobertura de pruebas
+# ==========================
+.coverage
+htmlcov/
+
+# ==========================
+# Jupyter
+# ==========================
 .ipynb_checkpoints/
